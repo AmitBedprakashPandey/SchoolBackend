@@ -25,7 +25,7 @@ const mongoUrl = process.env.DB_URL;
 
 mongoose
   .connect(mongoUrl, {
-    useNewUrlParser: true,
+    useNewUrlParser: true,strictQuery: false
   })
   .then(() => {
     console.log("Connected to database");
