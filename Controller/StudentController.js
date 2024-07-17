@@ -58,7 +58,7 @@ exports.InsertMany = async (req, res) => {
       datas.push(dataArray[index].data);
     }
 
-    // const find = await Model.insertMany(datas);
+    const find = await Model.insertMany(datas);
     return res
       .status(200)
       .json({ message: "Insert many successfully", data: datas })
