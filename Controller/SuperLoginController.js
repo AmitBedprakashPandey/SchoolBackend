@@ -5,7 +5,6 @@ const Key = process.env.KEY;
 
 // create admin user
 exports.register = async (req, res) => {
-  
   try {
     const data = Model(req.body);
     const foundUser = await Model.findOne({
@@ -21,7 +20,7 @@ exports.register = async (req, res) => {
       email: data.email,
       pass: hashedPassword,
       status: data.status,
-      auth: data.auth,
+      auth: true,
     });
     const inserted = await Model.create(user);
     return res.status(200).json({ message: "Register Successfully" });
@@ -62,13 +61,12 @@ exports.login = async (req, res) => {
 
 // Forget Password - Generate Token
 exports.forgetPassword = async (req, res) => {
-  const data = Model(req.body);
-  const { newpass } = req.body;
-  const user = await Model.findOne({ email: data.email });
   try {
+    const data = Model(req.body);
+    const { newpass } = req.body;
+    const user = await Model.findOne({ email: data.email });
     if (newpass) {
       const datas = req.body;
-
       const newHashPassword = await bcrypt.hash(newpass, 10);
       const data = await Model.findByIdAndUpdate(user._id, {
         email: datas.email,
@@ -95,7 +93,7 @@ exports.forgetPassword = async (req, res) => {
 exports.findloger = async (req, res) => {
   const { id } = req.params;
   try {
-    const user = await Model.findOne({_id: id });
+    const user = await Model.findOne({ _id: id });
 
     if (!user) {
       return user.status(404);

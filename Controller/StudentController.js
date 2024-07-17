@@ -1,15 +1,15 @@
 const Model = require("../Model/StudentModel");
 
-// get student by school for admin
 exports.getStudentBySchool = async (req, res) => {
   try {
-    const find = await Model.find({ schoolid: req.params.school });
-    return res.status(200).json({ find });
+    const { school } = req.params;
+    const data = Model.find({ schoolid: school });
+    res.status(200).end(data);
   } catch (error) {
-    console.error(error);
+    console.error("getStudentBySchoolId", error);
     res
       .status(500)
-      .json({ message: "Internal Server Error, Refresh and try again !" });
+      .json({ message: "Internal Server Error, Refresh and try again !!!" });
   }
 };
 
@@ -23,9 +23,9 @@ exports.getStudentByClassSectionSchool = async (req, res) => {
       schoolid: school,
       status: "true",
     });
-    return res.status(200).json({ find });
+    return res.status(200).json({ find }).end();
   } catch (error) {
-    console.error(error);
+    console.error("getStudentByClassSectionSchool", error);
     res
       .status(500)
       .json({ message: "Internal Server Error, Refresh and try again !" });
@@ -36,9 +36,12 @@ exports.getStudentByClassSectionSchool = async (req, res) => {
 exports.Create = async (req, res) => {
   try {
     const find = await Model.create(req.body);
-    return res.status(200).json({ message: "Create successfully", data: find });
+    return res
+      .status(200)
+      .json({ message: "Create successfully", data: find })
+      .end();
   } catch (error) {
-    console.error(error);
+    console.error("Studnet Create", error);
     res
       .status(500)
       .json({ message: "Internal Server Error, Refresh and try again !" });
@@ -51,14 +54,15 @@ exports.InsertMany = async (req, res) => {
   try {
     const dataArray = req.body; // Assuming req.body contains an array of documents
     for (let index = 0; index < dataArray.length; index++) {
-      await Model.insertMany(dataArray[index].data);
+      await Model.create(dataArray[index].data);
       datas.push(dataArray[index].data);
     }
 
     // const find = await Model.insertMany(datas);
     return res
       .status(200)
-      .json({ message: "Insert many successfully", data: datas });
+      .json({ message: "Insert many successfully", data: datas })
+      .end();
   } catch (error) {
     console.error(error);
     res
@@ -79,7 +83,7 @@ exports.UpdateMany = async (req, res) => {
       datas.push(dataArray[index]);
     }
 
-    // const find = await Model.insertMany(datas);
+    const find = await Model.insertMany(datas);
     return res
       .status(200)
       .json({ message: "Insert many successfully", data: datas });

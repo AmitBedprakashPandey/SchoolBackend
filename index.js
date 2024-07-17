@@ -11,21 +11,16 @@ app.use(bodyParser.json({ limit: "10mb" }));
 
 // Adjust the limit for URL-encoded requests
 app.use(bodyParser.urlencoded({ limit: "10mb", extended: true }));
-app.use(bodyParser.json()); 
-
-// app.use(cors({
-//   origin: "*", // Adjust this to your specific needs
-//   methods: 'GET, POST, PUT, DELETE, OPTIONS',
-//   allowedHeaders: 'Origin, X-Requested-With, Content-Type, Accept, Authorization'
-// }));
+app.use(bodyParser.json());
 
 app.use(cors());
 
 const mongoUrl = process.env.DB_URL;
-
+mongoose.set("strictQuery", false);
 mongoose
   .connect(mongoUrl, {
-    useNewUrlParser: true
+    useNewUrlParser: true,
+  })
   .then(() => {
     console.log("Connected to database");
   })
@@ -52,12 +47,13 @@ app.use("/school/teacherauth", TLoginAuthRoute);
 app.use("/school/adminauth", AdminAuthRoute);
 // third party auth
 app.use("/school/partyauth", partyRoute);
-app.use("/school/verifyexpire", ExpiredMiddleware);
+
+app.use("/school/verifyexpire", verfyToken, ExpiredMiddleware);
 
 app.use("/school/superauth", SuperAdminAuthRoute);
 app.use("/school/verfytoken", verfyToken);
 app.use("/school/teacher", verfyToken, teacherRoute);
-app.use("/school/student", StudentRoute);
+app.use("/school/student", verfyToken, StudentRoute);
 app.use("/school/school", verfyToken, SchoolRoute);
 app.use("/school/class", verfyToken, ClassRoute);
 app.use("/school/template", verfyToken, TemplateRoute);
