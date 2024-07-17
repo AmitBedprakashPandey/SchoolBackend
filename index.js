@@ -22,7 +22,7 @@ app.use(bodyParser.json());
 app.use(cors());
 
 const mongoUrl = process.env.DB_URL;
-mongoose.set('strictQuery', false);
+mongoose.set('strictQuery', true);
 mongoose
   .connect(mongoUrl, {
     useNewUrlParser: true})
