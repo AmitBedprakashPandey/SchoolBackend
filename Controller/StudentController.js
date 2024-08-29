@@ -3,8 +3,8 @@ const Model = require("../Model/StudentModel");
 exports.getStudentBySchool = async (req, res) => {
   try {
     const { school } = req.params;
-    const data = Model.find({ schoolid: school });
-    res.status(200).end(data);
+    const data = await Model.find({ schoolid: school });
+    res.status(200).json({data});
   } catch (error) {
     console.error("getStudentBySchoolId", error);
     res
@@ -58,7 +58,7 @@ exports.InsertMany = async (req, res) => {
       datas.push(dataArray[index].data);
     }
 
-    const find = await Model.insertMany(datas);
+    // const find = await Model.insertMany(datas);
     return res
       .status(200)
       .json({ message: "Insert many successfully", data: datas })
