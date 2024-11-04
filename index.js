@@ -35,9 +35,11 @@ const StudentRoute = require("./Routes/StudentRoutes");
 const SchoolRoute = require("./Routes/SchoolRoutes");
 const ClassRoute = require("./Routes/ClassRoutes");
 const TemplateRoute = require("./Routes/TemplateRoute");
+const AdmintCardTemplateRoute = require("./Routes/AdmitCardTemplateRoutes");
 const sectionRoute = require("./Routes/SectionRoutes");
 const partyRoute = require("./Routes/PartyRoutes");
 const ExpiredMiddleware = require("./Routes/ExpiredRoutes");
+const PhotoNumber = require("./Routes/PhotoNumberRoutes");
 // Teacher login
 app.use("/school/auth", AuthRoute);
 // on admin create register login forget password
@@ -46,16 +48,18 @@ app.use("/school/teacherauth", TLoginAuthRoute);
 app.use("/school/adminauth", AdminAuthRoute);
 // third party auth
 app.use("/school/partyauth", partyRoute);
+// Super admin auth
+app.use("/school/superauth", SuperAdminAuthRoute);                   
 
 app.use("/school/verifyexpire", verfyToken, ExpiredMiddleware);
-
-app.use("/school/superauth", SuperAdminAuthRoute);
+app.use("/school/photonumber", verfyToken, PhotoNumber);
 app.use("/school/verfytoken", verfyToken);
 app.use("/school/teacher", verfyToken, teacherRoute);
 app.use("/school/student", verfyToken, StudentRoute);
 app.use("/school/school", verfyToken, SchoolRoute);
 app.use("/school/class", verfyToken, ClassRoute);
 app.use("/school/template", verfyToken, TemplateRoute);
+app.use("/school/admitcardtemplate", verfyToken, AdmintCardTemplateRoute);
 app.use("/school/section", verfyToken, sectionRoute);
 
 app.listen(port, () => {

@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 
 const StudentSchema = new mongoose.Schema({
   admission_id: { type: String },
+  photonumber:{type:String},
   rollno: { type: Number },
   remark: { type: String },
   transport: { type: String },
