@@ -34,7 +34,7 @@ exports.Update = async (req, res) => {
   const data = Model(req.body);
   try {
     const find = await Model.findOneAndUpdate({ _id: data._id, schoolid: data.schoolid },data,{ new: true });
-    return res.status(200).json({data: find});
+    return res.status(200).json(find);
   } catch (error) {
     console.error(error);
     res
