@@ -73,7 +73,6 @@ exports.login = async (req, res) => {
 exports.findloger = async (req, res) => {
   const { id } = req.params;
   try {
-    console.log(id);
     const user = await Model.findOne({ schoolid: id });
 
     if (!user) {
@@ -102,7 +101,6 @@ exports.forgetPassword = async (req, res) => {
         // startexpired: data.startexpired,
       });
 
-      console.log("updateData", newData);
       return res.status(200).json({ message: "Update Detail", data: newData });
     }
     if (!newpass) {
