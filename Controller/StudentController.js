@@ -4,7 +4,7 @@ exports.getStudentBySchool = async (req, res) => {
   try {
     const { school } = req.params;
     const data = await Model.find({ schoolid: school });
-    res.status(200).json({data});
+    res.status(200).json({ data });
   } catch (error) {
     console.error("getStudentBySchoolId", error);
     res
@@ -144,6 +144,37 @@ exports.Delete = async (req, res) => {
       data
     );
     return res.status(200).json({ message: "Delete successfully" });
+  } catch (error) {
+    console.error(error);
+    res
+      .status(500)
+      .json({ message: "Internal Server Error, Refresh and try again !" });
+  }
+};
+
+// update session for admin
+exports.SessionUpdate = async (req, res) => {
+    const data = {
+      schoolid:req.body.schoolid,
+    _id:req.body._id,
+    oldyear: req.body.year,
+    oldclass: req.body.class,
+    oldsection: req.body.section,
+    class: req.body.formData?.newclass,
+    section:req.body.formData?.newsection,
+    year:req.body.formData?.newyear,
+  };
+
+  console.log(data);
+  
+  
+  try {
+    const find = await Model.findOneAndUpdate(
+      { _id: data._id, schoolid: data.schoolid },
+      data,
+      { new: true }
+    );
+    return res.status(200).json({ message: "Update successfully", data: find });
   } catch (error) {
     console.error(error);
     res

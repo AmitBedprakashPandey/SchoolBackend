@@ -9,6 +9,7 @@ Router.post("/many", controller.InsertMany);
 Router.post("/manyupdate", controller.UpdateMany);
 Router.put("/updateprintstatus", controller.UpdatePrintStatusMany);
 Router.put("/", controller.Update);
+Router.put("/session", controller.SessionUpdate);
 Router.post("/:id/:school", controller.Delete);
 
 module.exports = Router;
