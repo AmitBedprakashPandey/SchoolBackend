@@ -154,20 +154,17 @@ exports.Delete = async (req, res) => {
 
 // update session for admin
 exports.SessionUpdate = async (req, res) => {
-    const data = {
-      schoolid:req.body.schoolid,
-    _id:req.body._id,
+  const data = {
+    schoolid: req.body.schoolid,
+    _id: req.body._id,
     oldyear: req.body.year,
     oldclass: req.body.class,
     oldsection: req.body.section,
     class: req.body.formData?.newclass,
-    section:req.body.formData?.newsection,
-    year:req.body.formData?.newyear,
+    section: req.body.formData?.newsection,
+    year: req.body.formData?.newyear,
   };
 
-  console.log(data);
-  
-  
   try {
     const find = await Model.findOneAndUpdate(
       { _id: data._id, schoolid: data.schoolid },
@@ -180,5 +177,37 @@ exports.SessionUpdate = async (req, res) => {
     res
       .status(500)
       .json({ message: "Internal Server Error, Refresh and try again !" });
+  }
+};
+
+exports.sessionUpdateMany = async (req, res) => {
+  const { newClass, newSection, newYear } = req.params;
+  const ListStudents = req.body;
+  const datas = [];
+
+  try {
+    for (let index = 0; index < ListStudents.length; index++) {
+      await Model.findOneAndUpdate(
+        { _id: ListStudents[index]._id },
+        {
+          class: newClass,
+          section: newSection,
+          year: newYear,
+          oldclass: ListStudents[index].class,
+          oldsection: ListStudents[index].section,
+          oldyear: ListStudents[index].year,
+        }
+      );
+      datas.push(ListStudents[index]);
+    }
+
+    return res
+      .status(200)
+      .json({ message: "Pramote Successfully", data: datas });
+  } catch (error) {
+    console.error(error);
+    res
+      .status(500)
+      .json({ message: "Internal Server Error, Refresh and try again!" });
   }
 };
