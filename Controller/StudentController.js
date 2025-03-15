@@ -13,6 +13,20 @@ exports.getStudentBySchool = async (req, res) => {
   }
 };
 
+// ThirdParty Get By schoolid and Acdemic Year
+exports.getStudentBySchoolAndYear = async (req, res) => {
+  try {
+    const { school,year } = req.params;
+    const data = await Model.find({ schoolid: school,year:year});
+    res.status(200).json({ data });
+  } catch (error) {
+    console.error("getStudentBySchoolId", error);
+    res
+      .status(500)
+      .json({ message: "Internal Server Error, Refresh and try again !!!" });
+  }
+};
+
 // get student by class section school for teacher portal
 exports.getStudentByClassSectionSchool = async (req, res) => {
   try {

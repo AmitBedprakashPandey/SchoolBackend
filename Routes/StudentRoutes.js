@@ -3,6 +3,7 @@ const controller = require("../Controller/StudentController");
 const Router = express.Router();
 
 Router.get("/:school", controller.getStudentBySchool);
+Router.get("/getStudentSy/:school/:year", controller.getStudentBySchoolAndYear);
 Router.get("/:classs/:section/:school",controller.getStudentByClassSectionSchool);
 Router.post("/", controller.Create);
 Router.post("/many", controller.InsertMany);
