@@ -9,7 +9,7 @@ exports.getStudentBySchool = async (req, res) => {
     console.error("getStudentBySchoolId", error);
     res
       .status(500)
-      .json({ message: "Internal Server Error, Refresh and try again !!!" });
+      .json({ message: error });
   }
 };
 
@@ -48,17 +48,18 @@ exports.getStudentByClassSectionSchool = async (req, res) => {
 
 // create students for admin
 exports.Create = async (req, res) => {
+  
   try {
     const find = await Model.create(req.body);
     return res
       .status(200)
-      .json({ message: "Create successfully", data: find })
+      .json({ message: "Create successfully", data: find })  
       .end();
   } catch (error) {
     console.error("Studnet Create", error);
     res
       .status(500)
-      .json({ message: "Internal Server Error, Refresh and try again !" });
+      .json({ error: error });
   }
 };
 
@@ -133,6 +134,7 @@ exports.UpdatePrintStatusMany = async (req, res) => {
 // update students for admin
 exports.Update = async (req, res) => {
   const data = Model(req.body);
+  
   try {
     const find = await Model.findOneAndUpdate(
       { _id: data._id, schoolid: data.schoolid },
@@ -146,6 +148,7 @@ exports.Update = async (req, res) => {
       .status(500)
       .json({ message: "Internal Server Error, Refresh and try again !" });
   }
+
 };
 
 // no use for now
@@ -225,3 +228,19 @@ exports.sessionUpdateMany = async (req, res) => {
       .json({ message: "Internal Server Error, Refresh and try again!" });
   }
 };
+
+
+exports.updateYearAllStudnet = async(req,res)=>{
+  const data = await Model.find();
+
+  for (let index = 0; index < data.length; index++) {
+    
+    const find = await Model.find(
+      { _id: data[index]._id},
+      {year:"2024-2025"},
+      { new: true }
+    );
+    console.log(find?.year);
+    
+  }
+}

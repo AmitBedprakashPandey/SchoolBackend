@@ -13,5 +13,7 @@ Router.put("/", controller.Update);
 Router.put("/session", controller.SessionUpdate);
 Router.put("/sessionmany/:newClass/:newSection/:newYear", controller.sessionUpdateMany);
 Router.post("/:id/:school", controller.Delete);
+Router.put("/updateyear", controller.updateYearAllStudnet);
+
 
 module.exports = Router;

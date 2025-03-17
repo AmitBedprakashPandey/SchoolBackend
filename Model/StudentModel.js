@@ -1,9 +1,9 @@
 const mongoose = require("mongoose");
 
 const StudentSchema = new mongoose.Schema({
-  admission_id: { type: String },
-  photonumber:{type:String},
-  rollno: { type: Number },
+  admission_id: { type: String,unique: true },
+  photonumber:{type:String,unique: true, required: true,},
+  rollno: { type: Number,unique: true,},
   remark: { type: String },
   transport: { type: String },
   name: { type: String },

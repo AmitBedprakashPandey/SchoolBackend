@@ -17,10 +17,11 @@ exports.register = async (req, res) => {
       pass: hashedPassword,
       ogpass:data.pass,
       status: data.status,
+      sessionyear:data.sessionyear,
       auth: data.auth,
       schoolid: data.schoolid,
     });
-    const inserted = await Model.create(user);
+    await Model.create(user);
     return res.status(200).json({ message: "Register Successfully" });
   } catch (error) {
     console.error(error);
@@ -50,11 +51,13 @@ exports.login = async (req, res) => {
     const token = jwt.sign({ email: user.email }, Key, {
       expiresIn: "1d",
     });
+
     return res.status(200).json({
       schoolid: user.schoolid,
       email: user.email,
       partyToken: token,
       status:user.status,
+      sessionyear:user.sessionyear,
       expired: user.expired,
     });
   } catch (error) {
@@ -96,6 +99,7 @@ exports.forgetPassword = async (req, res) => {
       return res.status(200).json({ message: "Update Detailss", data: data });
     } else {
       const newd = await Model.findByIdAndUpdate(user._id, {
+        sessionyear:data.sessionyear,
         status: data.status,
       });
 

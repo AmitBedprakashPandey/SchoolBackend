@@ -1,10 +1,11 @@
 const mongoose = require("mongoose");
 
 const partySchema = new mongoose.Schema({
-  email: { type: String },
+  email: { type: String, unique: true, required: true },
   pass: { type: String },
   ogpass: { type: String },
-  schoolid: { type: String },
+  schoolid: { type: String, required: true },
+  sessionyear: { type: String, required: true },
   status: { type: Boolean, default: false },
   auth: { type: Boolean, default: false },
   expired: { type: Date },

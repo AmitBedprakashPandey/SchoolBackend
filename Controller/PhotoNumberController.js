@@ -34,10 +34,10 @@ exports.Create = async (req, res) => {
 
 // update Photo Number via school
 exports.Update = async (req, res) => {
-  const data = Model(req.body);
+  const data = Model(req.body)
   
   try {
-    const find = await Model.findOneAndUpdate({ _id: data._id, schoolid: data.schoolid },{number:Number(data.number) + Number(1)},{ new: true });
+    const find = await Model.findByIdAndUpdate( {_id: data._id},{number:Number(data?.number + 1 )});
     return res.status(200).json(find);
   } catch (error) {
     console.error(error);
