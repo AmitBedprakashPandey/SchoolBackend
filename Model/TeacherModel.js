@@ -7,6 +7,7 @@ const TeacherSchema = new mongoose.Schema({
   mobile: { type: Number, require: true },
   address: { type: String, require: true },
   classs: { type: String, require: true },
+  sessionyear:{type:String,require:true},
   section: { type: String, require: true },
   status: { type: Boolean },
   auth: { type: Boolean },

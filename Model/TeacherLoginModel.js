@@ -9,6 +9,7 @@ const TLoginSchema = new mongoose.Schema({
   status: { type: Boolean },
   user: { type: String, required: true },
   auth: { type: Boolean },
+  sessionyear:{type:String},
   expired: { type: Date },
 });
 

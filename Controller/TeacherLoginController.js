@@ -1,4 +1,6 @@
 const Model = require("../Model/TeacherLoginModel");
+const TeacherModel = require("../Model/TeacherModel");
+const SchoolModel = require("../Model/SchoolModel");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const Key = process.env.KEY;
@@ -17,6 +19,7 @@ exports.register = async (req, res) => {
       ogpass: data.pass,
       pass: hashedPassword,
       status: data.status,
+      sessionyear: data.sessionyear,
       auth: data.auth,
       user: data.user,
     });
@@ -31,9 +34,10 @@ exports.register = async (req, res) => {
 };
 // teacher Login
 exports.login = async (req, res) => {
-  const { email, pass } = req.body;
   try {
+    const { email, pass } = req.body;
     const user = await Model.findOne({ email });
+
     if (user.status === false) {
       return res.status(401).json({ error: "Access Denied" });
     }
@@ -49,14 +53,27 @@ exports.login = async (req, res) => {
     const token = jwt.sign({ userId: user.email }, Key, {
       expiresIn: "1d",
     });
+
+    
+    const findTeacher = await TeacherModel.findOne({ user: user });
+    const findSchool = await SchoolModel.findOne({
+      _id: findTeacher?.schoolid,
+    });
+  
     return res.status(200).json({
+      Schoolid: findTeacher?.schoolid,
+      name: findTeacher?.name,
+      lastname: findTeacher?.lastnm,
+      class: findTeacher?.classs,
+      section: findTeacher?.section,
+      sessionyear: user.sessionyear,
+      school: findSchool?.name, 
       token: token,
-      teach: user.user,
       email: user.email,
-      status: user.status,
-      expired: user.expired,
     });
   } catch (error) {
+    console.log(error);
+
     res.status(500).json({ error: "Login failed Refresh and try agian !!" });
   }
 };
@@ -76,30 +93,34 @@ exports.findloger = async (req, res) => {
 };
 // change password  email
 exports.forgetPassword = async (req, res) => {
-  const data = Model(req.body);
+  const getData = Model(req.body);
   const { newpass } = req.body;
-  const user = await Model.findOne({ email: data.email });
   try {
+    const user = await Model.findOne({ email: getData.email });
     if (newpass) {
-      const datas = req.body;
-
       const newHashPassword = await bcrypt.hash(newpass, 10);
-      const data = await Model.findByIdAndUpdate(user._id, {
-        email: datas.email,
-        ogpass:newpass,
+      const updateData = await Model.findByIdAndUpdate(user._id, {
+        email: getData.email,
+        ogpass: newpass,
         pass: newHashPassword,
-        status: datas.status,
+        sessionyear: getData.sessionyear,
+        status: getData.status,
       });
 
-      return res.status(200).json({ message: "Update Detailss", data: data });
+      return res
+        .status(200)
+        .json({ message: "Update Detailss", data: updateData });
     } else {
-      const newd = await Model.findByIdAndUpdate(user._id, {
-        status: data.status,
+      const newData = await Model.findByIdAndUpdate(user._id, {
+        status: getData.status,
+        sessionyear: getData.sessionyear,
       });
 
-      return res.status(200).json({ message: "Update Details", data: newd });
+      return res.status(200).json({ message: "Update Details", data: newData });
     }
   } catch (error) {
+    console.log(error);
+
     res
       .status(500)
       .json({ error: "Forget Password failed Refresh and try again !!" });
