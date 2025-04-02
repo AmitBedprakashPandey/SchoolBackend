@@ -40,6 +40,7 @@ const sectionRoute = require("./Routes/SectionRoutes");
 const partyRoute = require("./Routes/PartyRoutes");
 const ExpiredMiddleware = require("./Routes/ExpiredRoutes");
 const PhotoNumber = require("./Routes/PhotoNumberRoutes");
+const AttandenceRoute = require("./Routes/AttendanceRouter");
 // Teacher login
 app.use("/school/auth", AuthRoute);
 // on admin create register login forget password
@@ -61,6 +62,7 @@ app.use("/school/class", verfyToken, ClassRoute);
 app.use("/school/template", verfyToken, TemplateRoute);
 app.use("/school/admitcardtemplate", verfyToken, AdmintCardTemplateRoute);
 app.use("/school/section", verfyToken, sectionRoute);
+app.use("/school/attendance", verfyToken, AttandenceRoute);
 
 app.listen(port, () => {
   console.log(`${port} Server started...`);
