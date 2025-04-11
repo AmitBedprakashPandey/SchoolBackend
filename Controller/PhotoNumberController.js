@@ -3,7 +3,6 @@ const Model = require("../Model/PhotoNumberModel");
 // get all PhotoNumber by school without true
 exports.FindBySchoolAll = async (req, res) => {
   try {
-
     const find = await Model.findOne({ schoolid: req.params.school });
     return res.status(200).json(find);
   } catch (error) {
@@ -34,7 +33,7 @@ exports.Create = async (req, res) => {
 
 // update Photo Number via school
 exports.Update = async (req, res) => {
-  const data = Model(req.body)
+  const data = new Model(req.body)
   
   try {
     const find = await Model.findByIdAndUpdate( {_id: data._id},{number:Number(data?.number + 1 )});
@@ -46,7 +45,6 @@ exports.Update = async (req, res) => {
       .json({ message: "Internal Server Error, Refresh and try again !" });
   }
 };
-
 
 //  no use for now
 exports.Delete = async (req, res) => {
