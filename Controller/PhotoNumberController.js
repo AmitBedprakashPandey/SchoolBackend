@@ -15,7 +15,7 @@ exports.FindBySchoolAll = async (req, res) => {
 
 // create Photo Number with school
 exports.Create = async (req, res) => {
-  const data = Model(req.body);
+  const data = new Model(req.body);
   try {
     const foundData = await Model.findOne({schoolid: data.school});
     if (foundData) {
