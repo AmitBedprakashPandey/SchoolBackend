@@ -17,7 +17,7 @@ exports.FindBySchoolAll = async (req, res) => {
 exports.Create = async (req, res) => {
   const data = new Model(req.body);
   try {
-    const foundData = await Model.findOne({schoolid: data.school});
+    const foundData = await Model.findOne({schoolid: data.schoolid});
     if (foundData) {
       return res.status(302).json({ message: "Found Photo Number" });
     }
